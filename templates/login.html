@@ -10,7 +10,7 @@
     <link href="../static/css/bootstrap.css" rel="stylesheet">
     <style>
         #footer {
-            margin-top: 430px;
+            margin-top: 50px;
             height: 100px;
         }
         #header {
@@ -32,9 +32,7 @@
             <div class="col-md-3" style="background-color: #FFFFFF">
                 <nav class="navbar navbar-light bg-white">
                     <form class="form-inline">
-                        <label>
-                            <input class="form-control mr-sm-2" type="text" placeholder="Введите запрос">
-                        </label>
+                        <input class="form-control mr-sm-2" type="text" placeholder="Введите запрос">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
                                 style="color: white; background-color: #007BFF; border-color: #007BFF;">Поиск
                         </button>
@@ -48,10 +46,13 @@
             <div class="col-md-3" style="background-color: #FFFFFF">
                 <div class="form-group row">
                     <div class="col-sm-10 offset-sm-2">
+                        <img class="rounded-circle" src="../static/images/ava.png" width="65" height="65"/>
+                        <a class="nav-link" href="#">Nikitin Alexandr(admin)</a>
+                        <button type="button" class="btn btn-outline-primary">Настройки</button>
+                        <button type="button" class="btn btn-outline-primary">Выйти</button>
                     </div>
                 </div>
             </div>
-
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Main</a>
@@ -71,54 +72,126 @@
 
     <div class="row">
         <div class="col-md-8">
+            <h1 style="color: #000000"> Актуальные вопросы </h1>
             <div class="card">
                 <div class="card-body">
-                    <form class="needs-validation" novalidate>
-                        <div class="form-row">
-                            <div class="col-md-4 mb-3">
-                                <label for="validationCustom01">Email</label>
-                                <input type="email" class="form-control" id="validationCustom01" placeholder="Email"
-                                       value="" required>
-                                <div class="valid-feedback">
-                                    Корректно!
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="validationCustom02">Password</label>
-                                <input type="password" class="form-control" id="validationCustom02" placeholder="Пароль"
-                                       value="" required>
-                                <div class="valid-feedback">
-                                    Корректно!
-                                </div>
+                    <h4 class="card-title">Я запрещаю вам делать паблики ВК</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">Jason Statham</h6>
+                    <p class="card-text">
+                        Еще раз увижу паблики в ВК, которые "ведуться от моего лица", - приеду в РФ и буду общаться
+                        лично!
+                        Сслыки кидайте в ответы
+                    </p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary position-relative">
+                                <a href="#" class="card-link" style="color: white">Ответы</a>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">999+<span
+                                        class="visually-hidden">непрочитанные сообщения</span>
+                  </span>
+                            </button>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="card-text">Теги: <a href="#" class="card-link">СамыйКрутой</a><a href="#"
+                                                                                                       class="card-link">Отец</a>
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">Лайк</label>
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Войти</button>
-                    </form>
-
-                    <script>
-                        // Example starter JavaScript for disabling form submissions if there are invalid fields
-                        (function() {
-                          'use strict';
-                          window.addEventListener('load', function() {
-                            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                            var forms = document.getElementsByClassName('needs-validation');
-                            // Loop over them and prevent submission
-                            var validation = Array.prototype.filter.call(forms, function(form) {
-                              form.addEventListener('submit', function(event) {
-                                if (form.checkValidity() === false) {
-                                  event.preventDefault();
-                                  event.stopPropagation();
-                                }
-                                form.classList.add('was-validated');
-                              }, false);
-                            });
-                          }, false);
-                        })();
-                    </script>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <h1></h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Зенит-Казань VS Динамо Москва</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">Д. А. Волков</h6>
+                    <p class="card-text">
+                        Как вы думаете, зачем Питер купил победу Москвы в нашем матче???
+                    </p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary position-relative">
+                                <a href="#" class="card-link" style="color: white">Ответы</a>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">7<span
+                                        class="visually-hidden">непрочитанные сообщения</span>
+                  </span>
+                            </button>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="card-text">Теги: <a href="#" class="card-link">Кубок100летия</a><a href="#"
+                                                                                                         class="card-link">ДеньгиРешают</a>
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                <label class="custom-control-label" for="customCheck1">Лайк</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h1></h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Цели РФ на ближайшие 10 лет</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">В.В. Путин</h6>
+                    <p class="card-text">
+                        На данный момент не понятно куда двигаться будем, товарищи. Скидывайте свои предложения!))
+                    </p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary position-relative">
+                                <a href="#" class="card-link" style="color: white">Ответы</a>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9<span
+                                        class="visually-hidden">непрочитанные сообщения</span>
+                  </span>
+                            </button>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="card-text">Теги: <a href="#" class="card-link">Выборы2024</a><a href="#"
+                                                                                                      class="card-link">РоссияБудущего</a>
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                <label class="custom-control-label" for="customCheck1">Лайк</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2></h2>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                            <span class="sr-only">Предыдущая</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span class="sr-only">Следущая</span>
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
@@ -149,7 +222,6 @@
 
         </div>
     </div>
-
     <div id="footer">
         <div class="row md-4">
             <div class="text-center text-white" style="background-color: #0d6efd;">
@@ -160,6 +232,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 </body>
 </html>

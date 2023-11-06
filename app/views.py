@@ -19,15 +19,15 @@ def singup(request):
 
 
 def hot(request):
-    return render(request,"app/hot.html")
+    return render(request, "app/hot.html")
 
 
 def tag(request, tagname):
-    return render(request,"app/tag.html", {'tagname': tagname})
+    return render(request, "app/tag.html", {'tagname': tagname})
 
 
 def question(request, number):
-    return render(request, "app/question.html",{'number': number})
+    return render(request, "app/question.html", {'number': number})
 
 
 def paginate(objects_list, request, per_page=10):
