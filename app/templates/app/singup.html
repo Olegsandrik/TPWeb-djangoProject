@@ -1,0 +1,108 @@
+{% extends 'app/base.html' %}
+{% block registr %}
+    <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+            <h1></h1>
+            <button type="button" class="btn btn-outline-primary">
+                <a class="nav-link" href="{% url 'login' %}">Войти</a>
+            </button>
+        </div>
+    </div>
+{% endblock %}
+{% block navigation %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Main</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'ask' %}">Ask</a>
+    </li>
+{% endblock %}
+{% block mainrow %}
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="form-group row">
+                    <label for="inputnick" class="col-sm-2 col-form-label">Nickname</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control is-invalid" id="inputnick" placeholder="Nickname"
+                               value="" required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Необходимо согласие
+                    </div>
+                </div>
+                <h2></h2>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control is-invalid" id="inputPassword3"
+                               placeholder="Email" value="" required>
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <h2></h2>
+                <div class="form-group row">
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control is-invalid" id="inputEmail4"
+                               placeholder="Password" value="" required>
+                    </div>
+                </div>
+                <h2></h2>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Пол</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
+                                       value="option1" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Мужской
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                       value="option2">
+                                <label class="form-check-label" for="gridRadios2">
+                                    Женский
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <h2></h2>
+                <div class="custom-file">
+                    <div class="col-md-4">
+                        <label class="custom-file-label is-valid" for="customFile">Загрузите аватарку: </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="file" class="custom-file-input" id="customFile">
+                    </div>
+                </div>
+                <h2></h2>
+                <div class="form-group row">
+                    <div class="col-sm-6">Согласие на обработку персональных данных</div>
+                    <div class="col-sm-6">
+                        <div class="form-check is-valid">
+                            <input class="form-check-input" type="checkbox" id="gridCheck1">
+                            <label class="form-check-label" for="gridCheck1">
+                                Я согласен!
+                            </label>
+                            <div class="invalid-feedback">
+                                Необходимо согласие
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2></h2>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Зарегестрироваться</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
