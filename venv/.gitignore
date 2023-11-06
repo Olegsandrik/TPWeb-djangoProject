@@ -1,5 +1,6 @@
 # created by virtualenv automatically
 # Django #
+*
 *.log
 *.pot
 *.pyc
