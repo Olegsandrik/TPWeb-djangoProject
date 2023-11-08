@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
+
+
 def ask(request):
     return render(request, "app/ask.html")
 
@@ -17,10 +19,19 @@ questions = [
 
 
 def hot(request):
-    return render(request, "app/hot.html", {'questions': questions})
+    set_page = {'1', '2', '3', '4'}
+    page = request.GET.get("page", 1)
+    if page in set_page:
+        return render(request, "app/hot.html", {'questions': paginate(questions, page, 3)})
+    return render(request, "app/hot.html", {'questions': paginate(questions, 1, 3)})
 
-def base(request):
-    return render(request, "app/index.html")
+
+def home(request):
+    set_page = {'1', '2', '3', '4'}
+    page = request.GET.get("page", 1)
+    if page in set_page:
+        return render(request, "app/home.html", {'questions': paginate(questions, page, 3)})
+    return render(request, "app/home.html", {'questions': paginate(questions, 1, 3)})
 
 
 def login(request):

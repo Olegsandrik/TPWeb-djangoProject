@@ -18,7 +18,7 @@
                 </button>
             </div>
             <div class="col-md-8">
-                <p class="card-text">Теги: <a href="#" class="card-link">{{ question.tags }}</a>
+                <p class="card-text">Теги: <a href="{% url 'tag' tagname=question.tags  %}" class="card-link">{{ question.tags }}</a>
                 </p>
             </div>
             <div class="col-md-2">
