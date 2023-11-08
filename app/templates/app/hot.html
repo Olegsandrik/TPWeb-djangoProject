@@ -1,4 +1,5 @@
 {% extends 'app/index.html' %}
+{% load static %}
 {% block navigation %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'home' %}">Main</a>
@@ -6,13 +7,13 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'ask' %}">Ask</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'hot' %}">Hot</a>
+    </li>
 {% endblock %}
-{% block mainrowtitle %}
-    Самые лучшие вопросы
-{% endblock %}
-{% block firstquestion %}
-
-{% endblock %}
-{% block questionnavigation %}
-
+{% block mainrow %}
+    <h1 style="color: #000000"> Самые горячие вопросы </h1>
+    {% for question in questions %}
+        {% include 'components/question-item.html' %}
+    {% endfor %}
 {% endblock %}

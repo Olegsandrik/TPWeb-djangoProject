@@ -17,23 +17,27 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'ask' %}">Ask</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'hot' %}">Hot</a>
+    </li>
 {% endblock %}
 {% block mainrow %}
     <div class="card">
-        <h2 style="padding: 15px;"> Вопрос номер {{ number }} </h2>
+        <h2 style="padding: 15px;"> Вопрос номер {{ question.id }} </h2>
     </div>
     <h1></h1>
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Зенит-Казань VS Динамо Москва</h4>
-            <h6 class="card-subtitle mb-2 text-muted">Д. А. Волков</h6>
+            <h4 class="card-title">{{ question.title }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted"><img class="rounded-circle" src="{% static 'images/ava.png' %}"
+                                                           width="45" height="45"/> Д. А. Волков</h6>
             <p class="card-text">
-                Как вы думаете, зачем Питер купил победу Москвы в нашем матче???
+                {{ question.content }}
             </p>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="card-text">Теги: <a href="#" class="card-link">Кубок100летия</a><a href="#"
-                                                                                                 class="card-link">ДеньгиРешают</a>
+                    <p class="card-text">Теги: <a href="/tag/{{ question.tags }}"
+                                                  class="card-link">{{ question.tags }}</a>
                     </p>
                 </div>
                 <div class="col-md-2">
@@ -52,7 +56,8 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Ответ</h4>
-            <h6 class="card-subtitle mb-2 text-muted">А. В. Коновалов</h6>
+            <h6 class="card-subtitle mb-2 text-muted"><img class="rounded-circle" src="{% static 'images/ava.png' %}"
+                                                           width="45" height="45"/> А. В. Коновалов</h6>
             <p class="card-text">
                 Да чтобы хоть как-то разнообразить гигимонию Казани!!!
             </p>

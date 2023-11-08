@@ -73,6 +73,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'ask' %}">Ask</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'hot' %}">Hot</a>
+                    </li>
                 {% endblock %}
             </ul>
             <h2></h2>
@@ -100,10 +103,10 @@
                                 <button type="submit" class="btn btn-primary">INFO</button>
                             </h1>
                             <p class="font-italic">
-                                <a class="nav-link" style="color: #FFCC19" href="#">SQL</a>
-                                <a class="nav-link" style="color: #AACC70" href="#">Python</a>
-                                <a class="nav-link" style="color: #DC143C" href="#">CSS</a>
-                                <a class="nav-link" style="color: #32CD32" href="#">JS</a>
+                                <a class="nav-link" style="color: #FFCC19" href="{% url 'tag' tagname='SQL' %}">SQL</a>
+                                <a class="nav-link" style="color: #AACC70" href="{% url 'tag' tagname='Python' %}">Python</a>
+                                <a class="nav-link" style="color: #DC143C" href="{% url 'tag' tagname='CSS' %}">CSS</a>
+                                <a class="nav-link" style="color: #32CD32" href="{% url 'tag' tagname='JS' %}">JS</a>
                             </p>
                         </div>
                         <div class="col-md-6">
