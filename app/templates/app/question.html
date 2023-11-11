@@ -112,6 +112,8 @@
         </div>
     </div>
     <h2></h2>
+    {% include 'components/pagination-item.html' %}
+    <h2></h2>
     <form>
         <div class="form-outline mb-4">
             <label class="form-label" for="formExample">Ваш ответ</label>
@@ -119,5 +121,5 @@
         </div>
         <button type="button" style="padding: 12px 20px;" class="btn btn-primary">Ответить!!!</button>
     </form>
-
 {% endblock %}
+{% block pagenavigation %}{% endblock %}
