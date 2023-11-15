@@ -21,17 +21,17 @@ questions = [
 def hot(request):
     set_page = {'1', '2', '3', '4'}
     page = request.GET.get("page", 1)
-    if page in set_page:
+    if str(page) in set_page:
         return render(request, "app/hot.html", {'questions': paginate(questions, page, 3)})
-    return render(request, "app/hot.html", {'questions': paginate(questions, 1, 3)})
+    return Http404
 
 
 def home(request):
     set_page = {'1', '2', '3', '4'}
     page = request.GET.get("page", 1)
-    if page in set_page:
+    if str(page) in set_page:
         return render(request, "app/home.html", {'questions': paginate(questions, page, 3)})
-    return render(request, "app/home.html", {'questions': paginate(questions, 1, 3)})
+    return Http404
 
 
 def login(request):
