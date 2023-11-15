@@ -42,13 +42,13 @@ class Command(BaseCommand):
             name = fake.unique.word()
             tag = Tag.objects.create(name=name)
             for question in Question.objects.all():
-                question.tags.add(tag)  # assuming we want all questions to have all tags
+                question.tags.add(tag)
 
         ratings_count = ratio * 200
         for _ in range(ratings_count):
             user = choice(Author.objects.all())
             question = choice(Question.objects.all())
             Like.objects.create(author=user, vote=choice(Like.VOTES)[0],
-                                content_object=question)  # assuming we want to relate likes to questions for this case
+                                content_object=question)
 
         self.stdout.write(self.style.SUCCESS('ДБ в мусоре'))
