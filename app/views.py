@@ -19,19 +19,21 @@ questions = [
 
 
 def hot(request):
-    set_page = {'1', '2', '3', '4'}
-    page = request.GET.get("page", 1)
-    if str(page) in set_page:
-        return render(request, "app/hot.html", {'questions': paginate(questions, page, 3)})
-    return Http404
+    set_page = ('1', '2', '3', '4')
+    page = request.GET.get("page", '1')
+    if page in set_page:
+        return render(request, "app/hot.html", {'questions': paginate(questions, page, 3),
+                                                'pages': set_page})
+    raise Http404('Страница не найдена')
 
 
 def home(request):
-    set_page = {'1', '2', '3', '4'}
-    page = request.GET.get("page", 1)
-    if str(page) in set_page:
-        return render(request, "app/home.html", {'questions': paginate(questions, page, 3)})
-    return Http404
+    set_page = ('1', '2', '3')
+    page = request.GET.get("page", '1')
+    if page in set_page:
+        return render(request, "app/home.html", {'questions': paginate(questions, page, 3),
+                                                 'pages': set_page})
+    raise Http404('Страница не найдена')
 
 
 def login(request):
@@ -42,15 +44,18 @@ def singup(request):
     return render(request, "app/singup.html")
 
 
-
-
 def tag(request, tagname):
     return render(request, "app/tag.html", {'tagname': tagname})
 
 
 def question(request, number):
+    set_page = ('1', '2')
+    page = request.GET.get("page", '1')
     item = questions[number]
-    return render(request, "app/question.html", {'question': item})
+    if page in set_page:
+        return render(request, "app/question.html", {'question': item,
+                                                     'pages': set_page})
+    raise Http404('Страница не найдена')
 
 
 def paginate(objects_list, page, per_page=10):
