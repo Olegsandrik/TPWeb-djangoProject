@@ -22,11 +22,13 @@
 {% block mainrow %}
     <div class="card">
         <div class="card-body">
-            <form class="needs-validation" novalidate>
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
-                        <label for="validationCustom01">Email</label>
-                        <input type="email" class="form-control" id="validationCustom01" placeholder="Email"
+                        <label for="validationCustom01">Username</label>
+                        <input name="username" type="text" class="form-control" id="validationCustom01"
+                               placeholder="Username"
                                value="" required>
                         <div class="valid-feedback">
                             Корректно!
@@ -34,14 +36,16 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="validationCustom02">Password</label>
-                        <input type="password" class="form-control" id="validationCustom02" placeholder="Пароль"
+                        <input name="password" type="password" class="form-control" id="validationCustom02"
+                               placeholder="Пароль"
                                value="" required>
                         <div class="valid-feedback">
                             Корректно!
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Войти</button>
+                <button class="btn btn-primary" type="submit">Войти!</button>
+
             </form>
 
             <script>

@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
+from django.contrib.auth import login, authenticate
+from django.urls import reverse
+
+from app.forms import LoginForm
 
 
 def ask(request):
@@ -36,8 +40,19 @@ def home(request):
     raise Http404('Страница не найдена')
 
 
-def login(request):
-    return render(request, "app/login.html")
+def mylogin(request):
+    if request.method == 'GET':
+        login_form = LoginForm()
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            user = authenticate(request, **login_form.cleaned_data)
+            #print(user)
+            if user is not None:
+                login(request, user)
+                #print("sucsess")
+                return redirect(reverse('home'))
+    return render(request, "app/login.html", context={'form': login_form})
 
 
 def singup(request):
