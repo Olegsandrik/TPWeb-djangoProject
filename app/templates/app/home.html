@@ -11,6 +11,14 @@
         <a class="nav-link" href="{% url 'hot' %}">Hot</a>
     </li>
 {% endblock %}
+{% block registr %}
+    {% for ans in register %}
+        {% include 'components/register.html' %}
+    {% endfor %}
+    {% for ans in notregister %}
+        {% include 'components/notregister.html' %}
+    {% endfor %}
+{% endblock %}
 {% block mainrow %}
     <h1 style="color: #000000"> Актуальные вопросы </h1>
     {% for question in questions %}

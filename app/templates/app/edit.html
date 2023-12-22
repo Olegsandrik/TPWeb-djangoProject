@@ -1,13 +1,10 @@
 {% extends 'app/base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 {% block registr %}
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-2">
-            <button type="button" class="btn btn-outline-primary">
-                <a class="nav-link" href="{% url 'login' %}">Войти</a>
-            </button>
-        </div>
-    </div>
+    {% for ans in register %}
+        {% include 'components/register.html' %}
+    {% endfor %}
 {% endblock %}
 {% block navigation %}
     <li class="nav-item">
@@ -22,16 +19,21 @@
 {% endblock %}
 {% block mainrow %}
     <div class="card">
+        <div class="card-body"><h1>Настройки пользователя</h1></div>
+    </div>
+    <h1></h1>
+    <div class="card">
         <div class="card-body">
+            <div>Примечание: Если хотите оставить поле неизменным, то введите актуальные данные аккаунта</div>
+            <h1></h1>
             <form method="post" class="needs-validation">
                 {% csrf_token %}
                 <div class="col-md-4 mb-3">
                     {% bootstrap_form form %}
                 </div>
-                <button class="btn btn-primary" type="submit">Зарегестрироваться!</button>
+                <button class="btn btn-primary" type="submit">Поменять!</button>
             </form>
         </div>
     </div>
 {% endblock %}
-
 {% block pagenavigation %}{% endblock %}

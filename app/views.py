@@ -2,19 +2,49 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, EditProfileForm, AddQuestionForm, AddAnswerForm
 from app.models import Profile, Question, Answer
 
 
-
-
-
+@csrf_protect
 def ask(request):
-    return render(request, "app/ask.html")
+    reg = []
+    notreg = []
+    if request.user.is_authenticated:
+        reg.append(1)
+        if request.method == 'GET':
+            ask_form = AddQuestionForm()
+        if request.method == 'POST':
+            ask_form = AddQuestionForm(request.POST)
+            if ask_form.is_valid():
+                question = ask_form.create_qustion(request.user.profile)
+                if question:
+                    print('sucsess saving')
+                    return redirect(reverse('question', kwargs={'number': question.id}))
+                else:
+                    ask_form.add_error(None, "Error saving question")
+    else:
+        notreg.append(1)
+        if request.method == 'GET':
+            ask_form = AddQuestionForm()
+        if request.method == 'POST':
+            ask_form = AddQuestionForm(request.POST)
+            if ask_form.is_valid():
+                ask_form.add_error(None, "You are not logged in")
+            else:
+                ask_form.add_error(None, "Invalid data")
+    return render(request, "app/ask.html", {'user': request.user,
+                                                 'register': reg, 'notregister': notreg,
+                                            'form': ask_form})
+
+
+def mylogout(request):
+    logout(request)
+    return redirect(reverse('home'))
 
 
 def index(request):
@@ -40,12 +70,18 @@ def hot(request):
             set_page = ['1']
     page = request.GET.get("page", '1')
     if page in set_page:
+        reg = []
+        notreg = []
+        if request.user.is_authenticated:
+            reg.append(1)
+        else:
+            notreg.append(1)
         return render(request, "app/hot.html", {'questions': paginate(questionshot, page, 3),
-                                                 'pages': set_page})
+                                                 'pages': set_page, 'user': request.user,
+                                                 'register': reg, 'notregister': notreg})
     raise Http404('Страница не найдена')
 
 
-@login_required(redirect_field_name='continue')
 def home(request):
     questionsnew = Question.objects.get_new_questions()
     set_page = []
@@ -55,9 +91,17 @@ def home(request):
         set_page = ['1']
     page = request.GET.get("page", '1')
     if page in set_page:
+        reg = []
+        notreg = []
+        if request.user.is_authenticated:
+            reg.append(1)
+        else:
+            notreg.append(1)
         return render(request, "app/home.html", {'questions': paginate(questionsnew, page, 3),
-                                                 'pages': set_page})
+                                                 'pages': set_page, 'user': request.user,
+                                                 'register': reg, 'notregister': notreg})
     raise Http404('Страница не найдена')
+
 
 @csrf_protect
 def mylogin(request):
@@ -73,7 +117,7 @@ def mylogin(request):
                 #print("sucsess")
                 return redirect(reverse('home')) # request.Get.get('continue', '/') или revers('home')
             else:
-                login_form.add_error(None, "Wrong password or user does not exist.")
+                login_form.add_error('password', "Wrong password")
     return render(request, "app/login.html", context={'form': login_form})
 
 
@@ -87,6 +131,7 @@ def singup(request):
             user = registr_form.save()
             if user:
                 print("sucsessfully registered")
+                login(request, user)
                 return redirect(reverse('home')) # request.Get.get('continue', '/') или revers('home')
             else:
                 registr_form.add_error(None, "User saving error!")
@@ -102,9 +147,17 @@ def tag(request, tagname):
         set_page = ['1']
     page = request.GET.get("page", '1')
     if page in set_page:
-        return render(request, "app/test.html", {'questions': paginate(questionstag, page, 3),
-                                                 'pages': set_page, 'tagname': tagname})
+        reg = []
+        notreg = []
+        if request.user.is_authenticated:
+            reg.append(1)
+        else:
+            notreg.append(1)
+        return render(request, "app/tag.html", {'questions': paginate(questionstag, page, 3),
+                                                 'pages': set_page, 'tagname': tagname, 'user': request.user,
+                                                 'register': reg, 'notregister': notreg})
     raise Http404('Страница не найдена')
+
 
 def question(request, number):
     questionsreal = Question.objects.all()
@@ -114,11 +167,46 @@ def question(request, number):
     page = request.GET.get("page", '1')
     item = questionsreal[number-1]
     if page in set_page:
+        reg = []
+        notreg = []
+        if request.user.is_authenticated:
+            reg.append(1)
+
+        else:
+            notreg.append(1)
         return render(request, "app/question.html", {'question': item,
-                                                     'pages': set_page})
+                                                     'pages': set_page, 'user': request.user,
+                                                 'register': reg, 'notregister': notreg})
     raise Http404('Страница не найдена')
 
 
 def paginate(objects_list, page, per_page=10):
     paginator = Paginator(objects_list, per_page)
     return paginator.page(page)
+
+@csrf_protect
+def edit(request):
+    reg = []
+    notreg = []
+    if request.user.is_authenticated:
+        reg.append(1)
+        if request.method == 'GET':
+            edit_form = EditProfileForm()
+        if request.method == 'POST':
+            edit_form = EditProfileForm(request.POST)
+            if edit_form.is_valid():
+                user = request.user
+                user.username = edit_form.cleaned_data.get('username')
+                user.email = edit_form.cleaned_data.get('email')
+                user.set_password(edit_form.cleaned_data['password'])
+                user.save()
+                login(request, user)
+                print('sucsess edit')
+            else:
+                edit_form.add_error(None, 'Invalid data')
+        return render(request, "app/edit.html", {'user': request.user,
+                                                 'register': reg, 'notregister': notreg, 'form': edit_form})
+    else:
+        notreg.append(1)
+        return Http404
+

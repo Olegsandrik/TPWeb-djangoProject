@@ -1,14 +1,12 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block registr %}
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-2">
-            <img class="rounded-circle" src="{% static 'images/ava.png' %}" width="65" height="65"/>
-            <a class="nav-link" href="#">Nikitin Alexandr(admin)</a>
-            <button type="button" class="btn btn-outline-primary">Настройки</button>
-            <button type="button" class="btn btn-outline-primary">Выйти</button>
-        </div>
-    </div>
+    {% for ans in register %}
+        {% include 'components/register.html' %}
+    {% endfor %}
+    {% for ans in notregister %}
+        {% include 'components/notregister.html' %}
+    {% endfor %}
 {% endblock %}
 {% block navigation %}
     <li class="nav-item">

@@ -11,7 +11,7 @@ class Question(models.Model):
     author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='questions')
     datetime = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
-    context = models.TextField(max_length=512)
+    context = models.TextField()
     tags = models.ManyToManyField('Tag', related_name='questions')
     objects = QuestionManager()
 
@@ -38,7 +38,7 @@ class LikeAnswer(models.Model):
 
 class Answer(models.Model):
     title = models.CharField(max_length=256)
-    context = models.CharField(max_length=256)
+    context = models.TextField()
     author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='answers')
     datetime = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', related_query_name='answers')
@@ -47,7 +47,7 @@ class Answer(models.Model):
     objects = AnswerManager()
 
     def __str__(self):
-        return f"{self.author.user.username} answer: {self.title}"
+        return f"{self.author.user.username} answer: {self.question}"
 
 
 class Tag(models.Model):

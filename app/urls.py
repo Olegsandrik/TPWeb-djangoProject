@@ -9,4 +9,6 @@ urlpatterns = [
     path('tag/<str:tagname>/', views.tag, name='tag'),
     path('question/<int:number>/', views.question, name='question'),
     path('index/', views.index, name='index'),
+    path('mylogout/', views.mylogout, name='mylogout'),
+    path('pfofile/edit/', views.edit, name='edit'),
 ]

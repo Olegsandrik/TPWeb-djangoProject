@@ -1,14 +1,14 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
+
 {% block registr %}
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-2">
-            <img class="rounded-circle" src="{% static 'images/ava.png' %}" width="65" height="65"/>
-            <a class="nav-link" href="#">Nikitin Alexandr(admin)</a>
-            <button type="button" class="btn btn-outline-primary">Настройки</button>
-            <button type="button" class="btn btn-outline-primary">Выйти</button>
-        </div>
-    </div>
+    {% for ans in register %}
+        {% include 'components/register.html' %}
+    {% endfor %}
+    {% for ans in notregister %}
+        {% include 'components/notregister.html' %}
+    {% endfor %}
 {% endblock %}
 {% block navigation %}
     <li class="nav-item">
@@ -24,56 +24,14 @@
 {% block mainrow %}
     <div class="card">
         <div class="card-body">
-            <form class="was-validated">
-                <div class="mb-3">
-                    <label for="validationTextarea1" class="form-label">Заголовок</label>
-                    <textarea class="form-control is-invalid"
-                              style="width: 400px; height: 20px; font-style: italic;"
-                              id="validationTextarea1"
-                              placeholder="Введите заголовок вопроса" required></textarea>
-                    <div class="invalid-feedback">
-                        Требуется заполнить это поле
-                    </div>
+            <form method="post" class="needs-validation">
+                {% csrf_token %}
+                <div class="col-md-12 mb-3">
+                    {% bootstrap_form form %}
                 </div>
+                <button class="btn btn-primary" type="submit">Задать вопрос!</button>
             </form>
-            <form class="was-validated">
-                <div class="mb-3">
-                    <label for="validationTextarea2" class="form-label">Текст вопроса</label>
-                    <textarea class="form-control is-invalid"
-                              style="width: 820px; height: 200px; font-style: italic;"
-                              id="validationTextarea2"
-                              placeholder="Введите текст вопроса" required></textarea>
-                    <div class="invalid-feedback">
-                        Требуется заполнить это поле
-                    </div>
-                </div>
-            </form>
-            <form class="was-validated">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="validationTextarea3" class="form-label">Теги вопроса</label>
-                            <textarea class="form-control is-invalid"
-                                      style="width: 300px; height: 20px; font-style: italic;"
-                                      id="validationTextarea3"
-                                      placeholder="Введите теги вопроса" required></textarea>
-                            <div class="invalid-feedback">
-                                Требуется заполнить это поле
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="validationFormCheck1" required>
-                            <label class="form-check-label" for="validationFormCheck1">Я принимаю условия
-                                пользования</label>
-                            <div class="invalid-feedback">Требуется согласится с NikotinCorp</div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <h2></h2>
-            <button type="button" style="padding: 8px;" class="btn btn-primary">Задать вопрос</button>
+
         </div>
     </div>
 {% endblock %}
