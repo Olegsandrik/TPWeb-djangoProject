@@ -41,7 +41,7 @@ def ask(request):
                                                  'register': reg, 'notregister': notreg,
                                             'form': ask_form})
 
-
+@csrf_protect
 def mylogout(request):
     logout(request)
     return redirect(request.GET.get('next', '/'))
