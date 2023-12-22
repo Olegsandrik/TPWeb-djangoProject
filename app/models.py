@@ -1,97 +1,83 @@
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-
-class Tag(models.Model):
-    name = models.CharField(max_length=40, blank=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-    @property
-    def total_tags(self):
-        return self.questions.count()
-
-
-class QuestionManager(models.Manager):
-    def hot(self):
-        return self.order_by('-answers')
-
-    def new(self):
-        return self.order_by("-datetime")
-
-
-class LikeManager(models.Manager):
-    use_for_related_fields = True
-
-    def likes(self):
-        return self.get_queryset().filter(vote__gt=0)
-
-
-class Like(models.Model):
-    LIKE = 1
-    remove = 0
-    VOTES = (
-        (LIKE, 'Нравится'),
-        (remove, 'Убрал голос')
-    )
-    vote = models.SmallIntegerField(choices=VOTES)
-    author = models.ForeignKey('Author', related_name='likes', on_delete=models.PROTECT)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
-    objects = LikeManager()
-
-    def __str__(self):
-        return f"{self.author.name + self.author.surname} {self.vote}"
+from app.manegers import QuestionLikeManager, AnswerLikeManager, TagManager, QuestionManager, AnswerManager
 
 
 class Question(models.Model):
     title = models.CharField(max_length=256)
-    author = models.ForeignKey('Author', on_delete=models.PROTECT, related_name='questions')
+    author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='questions')
     datetime = models.DateTimeField(auto_now_add=True)
-    likes = GenericRelation('Like', related_query_name='questions')
+    likes = models.IntegerField(default=0)
     context = models.TextField(max_length=512)
-    tags = models.ManyToManyField('Tag', blank=True, related_name='questions')
+    tags = models.ManyToManyField('Tag', related_name='questions')
     objects = QuestionManager()
 
+    def __str__(self):
+        return f"{self.author.user.username} question: {self.title}"
+
+
+class LikeQuestion(models.Model):
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='likesquestion')
+    author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='likesquestion')
+    objects = QuestionLikeManager()
+
+    def __str__(self):
+        return f"{self.author.user.username} like question {self.question.title}"
+
+
+class LikeAnswer(models.Model):
+    answer = models.ForeignKey('Answer', on_delete=models.CASCADE, related_name='likesanswer')
+    author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='likesanswer')
+    objects = AnswerLikeManager()
+
+    def __str__(self):
+        return f"{self.author.user.username} like answer {self.answer.title}"
 
 class Answer(models.Model):
     title = models.CharField(max_length=256)
     context = models.CharField(max_length=256)
-    author = models.ForeignKey('Author', on_delete=models.PROTECT, related_name='answers')
+    author = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='answers')
     datetime = models.DateTimeField(auto_now_add=True)
-    likes = GenericRelation('Like', related_query_name='answers')
+    tags = models.ManyToManyField('Tag', related_query_name='answers')
+    likes = models.IntegerField(default=0)
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='answers', null=True, blank=False)
+    objects = AnswerManager()
 
     def __str__(self):
-        return f"{self.author.surname + self.author.name} answer"
+        return f"{self.author.user.username} answer: {self.title}"
 
 
-class Author(models.Model):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-    is_deleted = models.BooleanField(default=False)
-    password = models.CharField(max_length=50)
+class Tag(models.Model):
+    tag_name = models.CharField(max_length=100, null=True, blank=False)
+    objects = TagManager()
 
     def __str__(self):
-        return f"{self.name} {self.surname}"
-
-
-class QuestionInst(models.Model):
-    question = models.ForeignKey('Question', on_delete=models.CASCADE)
-    answers = models.ManyToManyField('Answer', blank=True)
+        return f"{self.tag_name} - tag"
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/ {1}'.format(instance.author.id, filename)
+    return 'avatar_{0}/{1}'.format(instance.user.username, filename)
 
 
-class UserAccount(models.Model):
-    author = models.OneToOneField('Author', on_delete=models.CASCADE)
+class Profile(models.Model):
+    premium = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(
         upload_to=user_directory_path,
         blank=True,
         null=True
     )
+
+    def __str__(self):
+        return self.user.username
+
+
+class myuser(models.Model):
+    username = models.CharField(max_length=25)
+    usersurname = models.CharField(max_length=25)
+    email = models.EmailField()
+    password = models.CharField (max_length=25)
+    datetime = models.DateTimeField(auto_now=True)

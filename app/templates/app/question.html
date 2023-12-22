@@ -30,20 +30,25 @@
         <div class="card-body">
             <h4 class="card-title">{{ question.title }}</h4>
             <h6 class="card-subtitle mb-2 text-muted"><img class="rounded-circle" src="{% static 'images/ava.png' %}"
-                                                           width="45" height="45"/> Д. А. Волков</h6>
+                                                           width="45" height="45"/> {{ question.author.user.username }}
+            </h6>
             <p class="card-text">
-                {{ question.content }}
+                {{ question.context }}
             </p>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="card-text">Теги: <a href="/tag/{{ question.tags }}"
-                                                  class="card-link">{{ question.tags }}</a>
+                    <p class="card-text">Теги:{% for tag in question.tags.all %}
+                        <a href="{% url 'tag' tagname=tag.tag_name %}" class="card-link">
+                            {{ tag.tag_name }}
+                        </a>
+                    {% endfor %}
                     </p>
                 </div>
                 <div class="col-md-2">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">Лайк</label>
+                        <label class="custom-control-label" for="customCheck1">Лайк
+                            ({{ question.likesquestion.all.count }})</label>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -53,66 +58,40 @@
         </div>
     </div>
     <h2></h2>
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Ответ</h4>
-            <h6 class="card-subtitle mb-2 text-muted"><img class="rounded-circle" src="{% static 'images/ava.png' %}"
-                                                           width="45" height="45"/> А. В. Коновалов</h6>
-            <p class="card-text">
-                Да чтобы хоть как-то разнообразить гигимонию Казани!!!
-            </p>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-                        <label class="custom-control-label" for="customCheck3">Лайк</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="custom-control custom-checkbox">
-                        <button type="button" class="btn btn-primary position-relative"
-                                style="background-color: #0d6efd;; color: blue">
-                            <a href="#" class="card-link" style="color: white">Правильный ответ!</a>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9<span
-                                    class="visually-hidden">непрочитанные сообщения</span>
-                  </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h2></h2>
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Ответ</h4>
-            <h6 class="card-subtitle mb-2 text-muted">А. В. Коновалов</h6>
-            <p class="card-text">
-                Да чтобы хоть как-то разнообразить гигимонию Казани!!!
-            </p>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck5">
-                        <label class="custom-control-label" for="customCheck5">Лайк</label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="custom-control custom-checkbox">
-                        <button type="button" class="btn btn-primary position-relative"
-                                style="background-color: #0d6efd;; color: blue">
-                            <a href="#" class="card-link" style="color: white">Правильный ответ!</a>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3<span
-                                    class="visually-hidden">непрочитанные сообщения</span>
-                  </span>
-                        </button>
+
+    <h4 class="card-title">Ответы</h4>
+    <h1></h1>
+    {% for ans in question.answers.sort_by_likes.all %}
+        <div class="card">
+            <div class="card-body">
+
+                <h6 class="card-subtitle mb-2 text-muted"><img class="rounded-circle"
+                                                               src="{% static 'images/ava.png' %}"
+                                                               width="45"
+                                                               height="45"/> {{ ans.author.user.username }}
+                </h6>
+
+                <p class="card-text">
+                    {{ ans.context }}
+                </p>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck3">
+                            <label class="custom-control-label" for="customCheck3">Лайк ({{ ans.likesanswer.all.count }})</label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <h2></h2>
-    {% include 'components/pagination-item.html' %}
+        <h1></h1>
+    {% endfor %}
+
+
+
+    <!-- {% include 'components/pagination-item.html' %} -->
+
+
     <h2></h2>
     <form>
         <div class="form-outline mb-4">

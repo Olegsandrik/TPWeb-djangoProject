@@ -1,54 +1,66 @@
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from faker import Faker
-from random import choice
+from random import choice, random
 
-from app.models import Question, Answer, Tag, Like, Author, QuestionInst
-
+from app.models import Question, Answer, Tag, Profile, LikeAnswer, LikeQuestion
 
 class Command(BaseCommand):
-    help = 'Мусор в бд'
+    help = 'Заполнение базы данных тестовыми данными.'
 
     def add_arguments(self, parser):
-        parser.add_argument('ratio', type=int, help='Количество мусора')
+        parser.add_argument('ratio', type=int, help='Множитель для создания данных')
 
+    @transaction.atomic
     def handle(self, *args, **kwargs):
         ratio = kwargs['ratio']
         fake = Faker()
 
-        users_count = ratio
-        for _ in range(users_count):
-            username = fake.unique.first_name()
-            surname = fake.unique.last_name()
+        profiles = []
+        tags = []
+        questions = []
+        answers = []
+
+        for i in range(ratio):
+            username = f"{fake.first_name()}{i}"
             password = fake.password()
-            Author.objects.create(name=username, surname=surname, password=password)
+            email = fake.email()
+            user = User.objects.create_user(username=username, password=password, email=email)
+            profile = Profile.objects.create(user=user, premium=False)
+            profiles.append(profile)
+            profiles.append(profile)
 
-        questions_count = ratio * 10
-        for _ in range(questions_count):
+            tag_name = f"{fake.unique.word}{i}"
+            tag = Tag.objects.create(tag_name=tag_name)
+            tags.append(tag)
+
+        for _ in range(ratio * 10):
             title = fake.sentence(nb_words=6)
+            hashed_title = hash(title)
             content = fake.paragraph(nb_sentences=3)
-            user = choice(Author.objects.all())
-            Question.objects.create(title=title, context=content, author=user)
+            author = choice(profiles)
+            num_tags_to_add = min(len(tags), 3)
+            question = Question.objects.create(title=title, context=content, author=author)
+            tag_indices = {abs(hashed_title + i) % len(tags) for i in range(num_tags_to_add)}
+            question_tags = [tags[i] for i in tag_indices]
+            question.tags.set(question_tags)
+            questions.append(question)
 
-        answers_count = ratio * 100
-        for _ in range(answers_count):
+        for _ in range(ratio * 100):
             content = fake.paragraph(nb_sentences=2)
-            user = choice(Author.objects.all())
-            question = choice(Question.objects.all())
-            answer = Answer.objects.create(title=fake.sentence(nb_words=3), context=content, author=user)
-            question.questioninst_set.create().answers.add(answer)
+            author = choice(profiles)
+            question = choice(questions)
+            answer = Answer.objects.create(context=content, author=author, question=question)
+            answers.append(answer)
 
-        tags_count = ratio
-        for _ in range(tags_count):
-            name = fake.unique.word()
-            tag = Tag.objects.create(name=name)
-            for question in Question.objects.all():
-                question.tags.add(tag)
+        for _ in range(ratio * 100):
+            user = choice(profiles)
+            if choice([True, False]):
+                question = choice(questions)
+                LikeQuestion.objects.create(author=user, question=question)
+            else:
+                answer = choice(answers)
+                LikeAnswer.objects.create(author=user, answer=answer)
 
-        ratings_count = ratio * 200
-        for _ in range(ratings_count):
-            user = choice(Author.objects.all())
-            question = choice(Question.objects.all())
-            Like.objects.create(author=user, vote=choice(Like.VOTES)[0],
-                                content_object=question)
-
-        self.stdout.write(self.style.SUCCESS('ДБ в мусоре'))
+        self.stdout.write(self.style.SUCCESS('Мусор в БД'))

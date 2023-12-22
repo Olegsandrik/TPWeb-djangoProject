@@ -8,4 +8,5 @@ urlpatterns = [
     path('hot/', views.hot, name='hot'),
     path('tag/<str:tagname>/', views.tag, name='tag'),
     path('question/<int:number>/', views.question, name='question'),
+    path('index/', views.index, name='index'),
 ]
