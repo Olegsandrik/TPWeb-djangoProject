@@ -44,7 +44,7 @@ def ask(request):
 
 def mylogout(request):
     logout(request)
-    return redirect(reverse('home'))
+    return redirect(request.GET.get('next', '/'))
 
 
 def index(request):
@@ -115,7 +115,7 @@ def mylogin(request):
             if user is not None:
                 login(request, user)
                 #print("sucsess")
-                return redirect(reverse('home')) # request.Get.get('continue', '/') или revers('home')
+                return redirect(request.GET.get('next', '/')) # request.Get.get('continue', '/') или revers('home')
             else:
                 login_form.add_error('password', "Wrong password")
     return render(request, "app/login.html", context={'form': login_form})
@@ -159,6 +159,7 @@ def tag(request, tagname):
     raise Http404('Страница не найдена')
 
 
+
 def question(request, number):
     questionsreal = Question.objects.all()
     set_page = []
@@ -169,14 +170,15 @@ def question(request, number):
     if page in set_page:
         reg = []
         notreg = []
+        ans_form = AddAnswerForm()
         if request.user.is_authenticated:
             reg.append(1)
-
         else:
             notreg.append(1)
         return render(request, "app/question.html", {'question': item,
                                                      'pages': set_page, 'user': request.user,
-                                                 'register': reg, 'notregister': notreg})
+                                                 'register': reg, 'notregister': notreg,
+                                                     'form': ans_form})
     raise Http404('Страница не найдена')
 
 

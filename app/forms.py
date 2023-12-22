@@ -121,9 +121,16 @@ class AddQuestionForm(forms.ModelForm):
 class AddAnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ('title', 'author', 'context',)
+        fields = ('title', 'context',)
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title)<=4:
+            self.add_error('title', 'Title must be more than 4 characters. ')
+            raise forms.ValidationError("")
+        return title
+
     def create_answer(self, Profile, Question):
-        question = Question.objects.create(author=Profile, title=self.cleaned_data['title'],
+        answer = Answer.objects.create(author=Profile, question=Question,title=self.cleaned_data['title'],
                                            context=self.cleaned_data['context'],)
-        question.tags.set(self.cleaned_data['tags'])
-        return question
+        return answer

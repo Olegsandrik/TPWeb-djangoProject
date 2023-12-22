@@ -1,5 +1,7 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
+
 {% block registr %}
     {% for ans in register %}
         {% include 'components/register.html' %}
@@ -91,12 +93,19 @@
 
 
     <h2></h2>
-    <form>
-        <div class="form-outline mb-4">
-            <label class="form-label" for="formExample">Ваш ответ</label>
-            <textarea class="form-control" style="height: 100px;" id="formExample" rows="4"></textarea>
+    <div class="card">
+        <div class="card-body">
+            <h1>Ваш ответ на вопрос</h1>
+            <form>
+                <form method="POST" class="needs-validation">
+                    {% csrf_token %}
+                    <div class="col-md-12 mb-3">
+                        {% bootstrap_form form %}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Ответить!</button>
+                </form>
+            </form>
         </div>
-        <button type="button" style="padding: 12px 20px;" class="btn btn-primary">Ответить!!!</button>
-    </form>
+    </div>
 {% endblock %}
 {% block pagenavigation %}{% endblock %}

@@ -36,6 +36,7 @@ class LikeAnswer(models.Model):
     def __str__(self):
         return f"{self.author.user.username} like answer {self.answer.title}"
 
+
 class Answer(models.Model):
     title = models.CharField(max_length=256)
     context = models.TextField()

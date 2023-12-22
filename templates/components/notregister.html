@@ -6,7 +6,7 @@
         </button>
         <h1></h1>
         <button type="button" class="btn btn-outline-primary">
-            <a class="nav-link" href="{% url 'login' %}">Войти</a>
+            <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Войти</a>
         </button>
     </div>
 </div>
